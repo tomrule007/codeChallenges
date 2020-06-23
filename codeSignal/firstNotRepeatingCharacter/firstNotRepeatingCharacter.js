@@ -12,12 +12,8 @@ function firstNotRepeatingCharacter(s) {
     return charMap;
   }, new Map());
 
-  for (const [char, count] in characterCount.entries()) {
+  for (const [char, count] of characterCount.entries()) {
     if (count == 1) return char;
   }
   return '_';
 }
-
-const s = 'abacabad';
-
-console.log(firstNotRepeatingCharacter(s));
