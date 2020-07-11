@@ -1,0 +1,22 @@
+{
+  "name": "codechallenges",
+  "version": "1.0.0",
+  "description": "collection of code challenges with testing scripts",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomrule007/codeChallenges.git"
+  },
+  "author": "Thomas J. Herzog",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomrule007/codeChallenges/issues"
+  },
+  "homepage": "https://github.com/tomrule007/codeChallenges#readme",
+  "devDependencies": {
+    "jest": "^26.1.0"
+  }
+}
