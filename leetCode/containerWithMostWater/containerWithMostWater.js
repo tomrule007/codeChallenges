@@ -3,17 +3,20 @@
  * @return {number}
  */
 var maxArea = function (height) {
-  return Math.max(
-    ...height.map((startHeight, startIndex) => {
-      return Math.max(
-        ...height.map((endHeight, endIndex) => {
-          const minHeight = startHeight > endHeight ? endHeight : startHeight;
-          const distance = Math.abs(startIndex - endIndex);
-          return minHeight * distance;
-        })
-      );
-    })
-  );
+  let left = 0;
+  let right = height.length - 1;
+  let max = 0;
+  while (left < right) {
+    let minHeight = Math.min(height[left], height[right]);
+    let distance = right - left;
+    max = Math.max(minHeight * distance, max);
+    if (height[left] < height[right]) {
+      left++;
+    } else {
+      right--;
+    }
+  }
+  return max;
 };
 
 module.exports = maxArea;
