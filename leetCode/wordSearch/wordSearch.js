@@ -11,29 +11,28 @@ const exist = (board, word) => {
 
   const checkDirections = (board, word, row, col, path = new Set()) => {
     // Exit if out of bounds
-    if (row < 0 || !board[row] || col < 0 || !board[row][col]) return;
+    if (row < 0 || !board[row] || col < 0 || !board[row][col]) return false;
 
     // Exit if character doesn't match
     const currentLetter = board[row][col];
-    if (currentLetter !== word[path.size]) return;
+    if (currentLetter !== word[path.size]) return false;
 
     // Exit if already visited
     const pathString = `${currentLetter} (${row},${col})`;
-    if (path.has(pathString)) return;
+    if (path.has(pathString)) return false;
 
     // Current char is valid add to path.
     path.add(pathString);
-    // Set valid answer if end of word and return
-    if (word.length === path.size) {
-      answers.push(path);
-      return;
-    }
+    // Set valid answer if end of word and return false
+    if (word.length === path.size) return true;
 
     // Check next direction
-    checkDirections(board, word, row - 1, col, new Set(path)); // up
-    checkDirections(board, word, row + 1, col, new Set(path)); // down
-    checkDirections(board, word, row, col - 1, new Set(path)); // left
-    checkDirections(board, word, row, col + 1, new Set(path)); // right
+    return (
+      checkDirections(board, word, row - 1, col, new Set(path)) || // up
+      checkDirections(board, word, row + 1, col, new Set(path)) || // down
+      checkDirections(board, word, row, col - 1, new Set(path)) || // left
+      checkDirections(board, word, row, col + 1, new Set(path)) // right
+    );
   };
 
   // Find first character
@@ -41,10 +40,10 @@ const exist = (board, word) => {
     for (let col = 0; col < colLen; col++) {
       const currentChar = board[row][col];
       if (currentChar === word[0]) {
-        checkDirections(board, word, row, col);
+        if (checkDirections(board, word, row, col)) return true;
       }
     }
   }
-  return answers.length > 0;
+  return false;
 };
 module.exports = exist;
