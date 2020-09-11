@@ -1,27 +1,28 @@
 const {
   countGoodTriplets,
-  tripletPermeations,
+  tripletOrderedCombinations,
   isGoodTriplet,
 } = require('./countGoodTriplets');
 describe('countGoodTriplets.js', () => {
-  describe('tripletPermeations', () => {
-    // Lookup nPr Permutations (n <- object count , r <- sample size)
-    // formula: P(n,r)=n!/(n−r)!  (r === 3)
+  describe('tripletOrderedCombinations', () => {
+    // *This is the correct formula as it eliminates the need to filter for ordered indexs
+    // Lookup nCr Combinations (n <- object count , r <- sample size)
+    // C(n,r)=n!/((n−r)!r!)
     it('is a function', async () => {
-      expect(typeof tripletPermeations).toBe('function');
+      expect(typeof tripletOrderedCombinations).toBe('function');
     });
 
-    it('returns array of length 6 when given array of length 3', async () => {
-      expect(tripletPermeations([1, 2, 3]).length).toBe(6);
+    it('given Array (length = 3), return Array (length = 1)', async () => {
+      expect(tripletOrderedCombinations([1, 2, 3]).length).toBe(1);
     });
-    it('returns array of length 24  when given array of length 4', async () => {
-      expect(tripletPermeations([1, 2, 3, 4]).length).toBe(24);
+    it('given Array (length = 4), return Array (length = 4)', async () => {
+      expect(tripletOrderedCombinations([1, 2, 3, 4]).length).toBe(4);
     });
 
     it('returns empty array when given array of less than three', async () => {
-      expect(tripletPermeations([1]).length).toBe(0);
-      expect(tripletPermeations([1]).length).toBe(0);
-      expect(tripletPermeations([1, 2]).length).toBe(0);
+      expect(tripletOrderedCombinations([1]).length).toBe(0);
+      expect(tripletOrderedCombinations([1]).length).toBe(0);
+      expect(tripletOrderedCombinations([1, 2]).length).toBe(0);
     });
   });
   describe('isGoodTriplet', () => {
@@ -164,7 +165,8 @@ describe('countGoodTriplets.js', () => {
         95,
       ];
       it('uses less memory to solve this problem', () => {
-        // Will use function speed to test this. Currently ~400 to ~300 ms on my rig. compared to simple tests at ~1ms
+        // Will use function speed to test this. Currently ~150 ms on my rig (from ~300-400 on old version).
+        // Compared to simple tests at ~1ms
         expect(countGoodTriplets(...largeInput)).toBe(66268);
       });
     });
