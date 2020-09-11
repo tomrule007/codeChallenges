@@ -1,5 +1,10 @@
+// Submission Details
+// 92 / 92 test cases passed.
+// Status: Accepted
+// Runtime: 832 ms
+// Memory Usage: 66.8 MB
+
 const tripletOrderedCombinations = function (arr) {
-  // build all triplet permeation
   const triplets = [];
   for (let i = 0; i < arr.length; i++) {
     const first = arr[i];
@@ -13,7 +18,6 @@ const tripletOrderedCombinations = function (arr) {
   }
   return triplets;
 };
-const indexIsOrdered = (i, j, k) => i < j && j < k;
 const isGoodTriplet = (a, b, c) => ([first, second, third]) => {
   if (
     Math.abs(first - second) <= a &&
