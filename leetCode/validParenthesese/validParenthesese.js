@@ -3,20 +3,35 @@
  * @return {boolean}
  */
 
-const isParentheses = (char) =>
-  ['(', ')', '{', '}', '[', ']'].some((valid) => char === valid);
 var isValid = function (s) {
-  // use stack data type to track valid adds (array pop / push / peek arr[length-1])
-  // check char is valid paren (invalid -> RETURN FALSE)
-  // peek stack if valid
-  //    1)closes matching set (pop them off) (decrement open count for type)
-  //    2)closes mismatching set --> RETURN FALSE
-  //    3)undefined and opening --> push on to stack (increment open count for type)
-  //    4)opening against another opening () --> push (increment open count for type)
-  // RETURN TRUE IF IT PASSES ABOVE 4 Tests
-  // easy outs
-  //    odd character count -> RETURN FALSE
-  //    invalid Characters -> RETURN FALSE
+  // Helper functions
+  const isClosingBracket = (bracket) => [')', ']', '}'].includes(bracket);
+  const isOpenBracket = (bracket) => ['(', '[', '{'].includes(bracket);
+  const isOddLength = ({ length }) => length % 2 === 1;
+  const getMatchingOpen = (bracket) =>
+    ({
+      ')': '(',
+      ']': '[',
+      '}': '{',
+    }[bracket]);
+
+  // Easy out: odd character count
+  if (isOddLength(s)) return false;
+
+  const openBrackets = [];
+
+  for (let i = 0; i < s.length; i++) {
+    const bracket = s[i];
+    if (isClosingBracket(bracket)) {
+      if (openBrackets.pop() !== getMatchingOpen(bracket)) return false;
+    } else if (isOpenBracket(bracket)) {
+      openBrackets.push(bracket);
+    } else {
+      // invalid bracket character
+      return false;
+    }
+  }
+  return openBrackets.length === 0;
 };
 
 module.exports = isValid;
