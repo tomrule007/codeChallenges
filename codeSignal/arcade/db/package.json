@@ -1,0 +1,18 @@
+{
+  "name": "codesignal-arcade-db",
+  "version": "1.0.0",
+  "description": "A mysql database container for running the codesignal arcade database challenge problems locally",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd ./db-docker && sudo docker-compose down  && sudo docker-compose up -d",
+    "1": "cd ./db-docker && sudo docker-compose exec -T mysql-development mysql -phelloworld testapp < setup.sql",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "codesignal",
+    "mysql",
+    "container"
+  ],
+  "author": "Thomas J Herzog",
+  "license": "ISC"
+}

@@ -83,6 +83,8 @@ Then open with (or find in start menu)
 
 \*\* Semi-colon is required at the end of all commands
 
-```
+LOAD SETUP DATA
 
+```
+sudo docker-compose exec -T mysql-development mysql -phelloworld testapp < setup.sql
 ```
