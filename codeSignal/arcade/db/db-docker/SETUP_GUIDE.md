@@ -23,6 +23,38 @@ Test install by running your first docker image:
 
     $ docker container run hello-world
 
+| command / hotkey                                  | function                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `docker container run [container_name] [command]` | Run container with optional command _**[OPTIONS:** `-it` interactive mode,`-d` detached mode,`--rm` auto remove on exit, `--name` name the container, `-p outer#:inner#` expose docker inner port, `-v outer:inner` mount outer volume (dir) into container, `--link [container_name]` assigns container ip to name for communication (depreciated but works), `--network [net_name]` connects to named network **]**_ |
+| Interactive mode: `ctrl+d`                        | Quit running command and kill container                                                                                                                                                                                                                                                                                                                                                                                |
+| `docker ps`                                       | See running docker containers _**Options:** `-a` see all containers, `-q` list just ids_                                                                                                                                                                                                                                                                                                                               |
+| `docker container ls`                             | see running docker containers                                                                                                                                                                                                                                                                                                                                                                                          |
+| Interactive mode: `ctrl+P` + `ctrl+q`             | detach from running container and quit                                                                                                                                                                                                                                                                                                                                                                                 |
+| `docker container attach [container_name]`        | reattach to a detached container                                                                                                                                                                                                                                                                                                                                                                                       |
+| `docker container stop [container_name]`          | kill a detached container by name                                                                                                                                                                                                                                                                                                                                                                                      |
+| `docker container rm [id or name]`                | removes the container                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `docker images rm [image_name]`                   | removes the image                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `docker network ls`                               | display networks                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `docker network create [net_name]`                | create network by name                                                                                                                                                                                                                                                                                                                                                                                                 |
+
+Tips
+
+Add to bash profile to hide legacy commands
+
+    export DOCKER_HIDE_LEGACY_COMMANDS=true
+
+    echo "export DOCKER_HIDE_LEGACY_COMMANDS=true" >> .bashrc
+
+Examples Commands
+
+    $ docker container run -it alpine sh
+    $ cat /etc/os-release
+    $ uname -r
+
+Remove all containers (will not remove running containers)
+
+    $ docker container rm $(docker ps -aq)
+
 ---
 
 ## 2) Install: docker-compose on debian 9
@@ -103,3 +135,7 @@ LOAD SETUP DATA
 ```
 sudo docker-compose exec -T mysql-development mysql -phelloworld testapp < setup.sql
 ```
+
+## RESOURCES
+
+Free online course: [https://learndocker.online/](https://learndocker.online/)
