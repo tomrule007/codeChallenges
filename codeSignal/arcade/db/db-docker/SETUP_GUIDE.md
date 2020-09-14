@@ -6,7 +6,22 @@ Installation guide to get a docker MySQL database up and running.
 
 ## 1) Install: Docker Engine
 
-(TODO: LINK TO GUIDE)
+[Debian Guide](https://docs.docker.com/engine/install/debian/)
+
+convenience script (not recommend for production )
+
+    $ curl -fsSL https://get.docker.com -o get-docker.sh
+    $ sudo sh get-docker.sh
+
+Add permission to run Docker as a non-root user \*EXTRA SECURITY CONCERNS
+
+    $ sudo usermod -aG docker your-user
+
+_\*Remember to log out and back in for this to take effect!_
+
+Test install by running your first docker image:
+
+    $ docker container run hello-world
 
 ---
 
