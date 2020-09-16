@@ -23,26 +23,35 @@ Test install by running your first docker image:
 
     $ docker container run hello-world
 
-commands
+## Commands
 
-    docker container run [options] [image_name] [command]
+---
 
-    # Runs the container with an optional command
+`$ Docker container run [options] [image_name] [command]`
 
-    #              [OPTIONS] # Usage
+Run container with an optional command and options
 
-                        -it  # Starts container in interactive mode
-                         -i  # shows output
-                         -t  # shows pseudo input
-                         -d  # detached mode
-                       --rm  # auto remove on exit (also removes anonymous volumes)
-                     --name  # name the container
-         -p [outer]:[inner]  # expose docker inner port # to outer host #
-         -v [outer]:[inner]  # mount outer volume (dir) into container
-    --link [container_name]  # assigns container ip to name for communication (depreciated but works)
-      --network [net_name]   # connects to named network
+| OPTIONS                     | Description                                                   |
+| --------------------------- | ------------------------------------------------------------- |
+| `-it`                       | Starts container in interactive mode                          |
+| `-i`                        | shows output                                                  |
+| `-t`                        | shows pseudo input                                            |
+| `-d`                        | detached mode                                                 |
+| `--rm`                      | auto remove on exit (also removes anonymous volumes)          |
+| `--name [container_name]`   | name the container                                            |
+| `-p [outer]:[inner]`        | expose docker inner container port to outer host port         |
+| `--publish [outer]:[inner]` | long form of -p                                               |
+| `-v [outer]:[inner]`        | mount outer host folder into container folder                 |
+| `--link [container_name]`   | resolves container name to ip address (depreciated but works) |
+| `--network [net_name]`      | connects to named network                                     |
 
-| command / hotkey                                             | function                                                                                                                              |
+Example
+
+    docker container run --name webserver -p 80:80 -v $(pwd)/html:/var/www/html/ -itd nginx:latest
+
+\*Tip using `$(pwd)` is a way to get present working directory
+
+| commands / hotkey                                            | function                                                                                                                              |
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
 | Interactive mode: `ctrl+d`                                   | Quit running command and kill container                                                                                               |
 | `docker ps`                                                  | See running docker containers _**Options:** `-a` see all containers, `-q` list just ids_                                              |
