@@ -23,21 +23,55 @@ Test install by running your first docker image:
 
     $ docker container run hello-world
 
-| command / hotkey                                  | function                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `docker container run [container_name] [command]` | Run container with optional command _**[OPTIONS:** `-it` interactive mode,`-d` detached mode,`--rm` auto remove on exit, `--name` name the container, `-p outer#:inner#` expose docker inner port, `-v outer:inner` mount outer volume (dir) into container, `--link [container_name]` assigns container ip to name for communication (depreciated but works), `--network [net_name]` connects to named network **]**_ |
-| Interactive mode: `ctrl+d`                        | Quit running command and kill container                                                                                                                                                                                                                                                                                                                                                                                |
-| `docker ps`                                       | See running docker containers _**Options:** `-a` see all containers, `-q` list just ids_                                                                                                                                                                                                                                                                                                                               |
-| `docker container ls`                             | see running docker containers                                                                                                                                                                                                                                                                                                                                                                                          |
-| Interactive mode: `ctrl+P` + `ctrl+q`             | detach from running container and quit                                                                                                                                                                                                                                                                                                                                                                                 |
-| `docker container attach [container_name]`        | reattach to a detached container                                                                                                                                                                                                                                                                                                                                                                                       |
-| `docker container stop [container_name]`          | kill a detached container by name                                                                                                                                                                                                                                                                                                                                                                                      |
-| `docker container rm [id or name]`                | removes the container                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `docker images rm [image_name]`                   | removes the image                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `docker network ls`                               | display networks                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `docker network create [net_name]`                | create network by name                                                                                                                                                                                                                                                                                                                                                                                                 |
+commands
+
+    docker container run [options] [image_name] [command]
+
+    # Runs the container with an optional command
+
+    #              [OPTIONS] # Usage
+
+                        -it  # Starts container in interactive mode
+                         -i  # shows output
+                         -t  # shows pseudo input
+                         -d  # detached mode
+                       --rm  # auto remove on exit (also removes anonymous volumes)
+                     --name  # name the container
+         -p [outer]:[inner]  # expose docker inner port # to outer host #
+         -v [outer]:[inner]  # mount outer volume (dir) into container
+    --link [container_name]  # assigns container ip to name for communication (depreciated but works)
+      --network [net_name]   # connects to named network
+
+| command / hotkey                                             | function                                                                                                                              |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Interactive mode: `ctrl+d`                                   | Quit running command and kill container                                                                                               |
+| `docker ps`                                                  | See running docker containers _**Options:** `-a` see all containers, `-q` list just ids_                                              |
+| `docker container ls`                                        | see running docker containers                                                                                                         |
+| Interactive mode: `ctrl+P` + `ctrl+q`                        | detach from running container and quit                                                                                                |
+| `docker container attach [container_name]`                   | reattach to a detached container                                                                                                      |
+| `docker container stop [container_name]`                     | stops container by sending SIGTERM signal to PID1 (Also starts a 10second timeout that send the SIGKILL signal if it doesnt stop)name |  | `docker container kill [container_name]` | kills container immediately |
+| `docker container rm [id or name]`                           | removes the container                                                                                                                 |
+| `docker images rm [image_name]`                              | removes the image                                                                                                                     |
+| `docker network ls`                                          | display networks                                                                                                                      |
+| `docker network create [net_name]`                           | create network by name                                                                                                                |
+| `docker image pull [image_name]:[tag]`                       | download a docker image (tag is optional)                                                                                             |
+| `docker image ls`                                            | list local docker images                                                                                                              |
+| `Docker login [optional_repository_url]`                     | default login to hub.docker.com or other repository if url is included                                                                |
+| `Docker image tag [old_name]:[old_tag] [new_name]:[new_tag]` | rename a docker image                                                                                                                 |
+| `Docker image push [name]:[tag]`                             | push images to your repo must be name spaced to your user name                                                                        |
+| `ctrl+c`                                                     | send SIGINT command to PID 1                                                                                                          |
+| `docker logs [-f][container_name]`                           | shows logs in standard out `-f` follow mode to show all new logs                                                                      |
+| `docker volume ls`                                           | docker managed volumes (will be used if not source is declared with `-v`)                                                             |
+| `Docker volume rm [volume_name]`                             | remove a specific volume                                                                                                              |
+| `docker volume prune`                                        | delete all unused volumes                                                                                                             |
+| `docker volume inspect [volume_name]`                        | display volume information                                                                                                            |
+| `docker volume create [volume_name]`                         | create a new volume                                                                                                                   |
 
 Tips
+
+Mount all volumes from another container `--volumes-from [container_name]`
+
+    docker container run -it --rm --name c2 --volumes-from c1 alpine sh
 
 Add to bash profile to hide legacy commands
 
@@ -46,6 +80,29 @@ Add to bash profile to hide legacy commands
     echo "export DOCKER_HIDE_LEGACY_COMMANDS=true" >> .bashrc
 
 Examples Commands
+
+Binds a local directory to a directory in the container with read only (ro) permission.
+
+    Docker container run -v /local/dir:/container/dir:ro
+
+NGINX static html folder
+
+    Docker container run -v $(pwd)/local/dir:/var/www/html:ro
+
+Tip use \$(pwd) to print working directory
+
+Can also bind named docker volume
+
+    Docker container run -v named-volume:/container/dir:ro
+    Docker volume ls (will show named-volume)
+
+\* Recommended to always do read only permission when ever possible
+
+Alternative to -v or --volume (volume is the default, no src will create anonymous volume)
+
+    --mount type=[bind|volume],src=[local_path],destination=[container_path],readonly
+
+Other commands
 
     $ docker container run -it alpine sh
     $ cat /etc/os-release
@@ -135,6 +192,42 @@ LOAD SETUP DATA
 ```
 sudo docker-compose exec -T mysql-development mysql -phelloworld testapp < setup.sql
 ```
+
+## Create an image
+
+Dockerfile
+
+    FROM [base_image_name]
+
+    RUN [commands..]
+
+    # linking log files to standard out (or stderr)
+    RUN rm /dir/log/file && ln -s dev/stdout /dir/log/file
+
+    # automatically create anonymous volume at this location
+    VOLUME /dir/location
+
+    # copy files from local host to container at build time (can use pattern matching (anything supported by: Go's filepath.Match ) IE: /html/*.html see docs for details)
+    COPY ./html/*.html /var/www/html/
+
+    # add can copy over files from urls or zip files
+
+    ADD https://www.example.com/ondex.html
+
+    # <- comment; EXEC FORM of executing commands as items in an array
+    CMD ["[cmd]","[args]"]
+
+Build image
+
+    $ Docker image build -t [my_name]:[my_tag] [context]
+
+\* context is the directory were the Dockerfile exists
+
+Use .dockerignore file to exclude files from being included in the build
+
+    # .dockerignore
+
+    /node_modules/
 
 ## RESOURCES
 
