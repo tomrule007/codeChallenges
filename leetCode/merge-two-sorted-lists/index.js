@@ -20,28 +20,20 @@ ListNode.prototype.toString = function listNodeString() {
 var mergeTwoLists = function (l1, l2) {
   let l1Pointer = l1;
   let l2Pointer = l2;
-  let head = new ListNode();
+  let head = {};
   let tail = head;
-  while (l1Pointer || l2Pointer) {
-    let val;
-    if (l1Pointer && l2Pointer) {
-      if (l1Pointer.val < l2Pointer.val) {
-        val = l1Pointer.val;
-        l1Pointer = l1Pointer.next;
-      } else {
-        val = l2Pointer.val;
-        l2Pointer = l2Pointer.next;
-      }
-    } else if (l1Pointer) {
-      val = l1Pointer.val;
+  while (l1Pointer && l2Pointer) {
+    if (l1Pointer.val < l2Pointer.val) {
+      tail.next = l1Pointer;
       l1Pointer = l1Pointer.next;
     } else {
-      val = l2Pointer.val;
+      tail.next = l2Pointer;
       l2Pointer = l2Pointer.next;
     }
-    tail.next = new ListNode(val);
     tail = tail.next;
   }
+
+  tail.next = l1Pointer || l2Pointer;
 
   return head.next;
 };
